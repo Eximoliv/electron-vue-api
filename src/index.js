@@ -62,3 +62,45 @@ startDatabase().then(async () => {
     console.log('listening on port 3001');
   });
 });
+
+
+
+include
+on('onClientGameTypeStart', () => {
+  exports.spawnmanager.setAutoSpawnCallback(() => {
+    exports.spawnmanager.spawnPlayer({
+      x: 686.245,
+      y: 577.950,
+      z: 130.461,
+      model: 'a_m_m_skater_01'
+    }, () => {
+      emit('chat:addMessage', {
+        args: [
+          'Hi, there!'
+        ]
+      })
+    });
+  });
+
+  exports.spawnmanager.setAutoSpawn(true)
+  exports.spawnmanager.forceRespawn()
+  console.log ['getplayerserverid'] 
+});
+const root = GetResourcePath(GetCurrentResourceName());
+
+// wrong
+fs.readFile(`${root}/test.txt`, { encoding: 'utf8' }, (err, data) => {
+  emit('chat:addMessage', { // this call will error out due to thread affinity
+    args: [ data ]
+    getplayerserverid[spawnPlayer]
+  });
+});
+
+// right
+fs.readFile(`${root}/test.txt`, { encoding: 'utf8' }, (err, data) => {
+  setImmediate(() => { // the callback will be called next game tick
+    emit('chat:addMessage', {
+      args: [ data ]
+    });
+  });
+});
